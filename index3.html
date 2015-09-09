@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+
+function wiki_api(position, rows, radius){
+	var root = "http://api.geonames.org/findNearbyWikipediaJSON?formatted=true&lat=";
+	var auth = "&username=geotheory&style=full&maxRows=";
+	var api_call = root + position.lat + "&lng=" + position.lon + auth + rows + "&radius=" + radius;
+	jsonIn = $.getJSON( api_call, function() {})
+	jsonIn.complete(function() {
+		data = jsonIn.responseJSON.geonames;
+		console.log(data);
+	});
+}
+
+wiki_api({lon: -0.15, lat: 51.5}, 3, 1);
+
+</script>
+</head>
+<body>
+</body>
+</html>

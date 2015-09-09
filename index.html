@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wiksplorer</title>
+  <link rel="stylesheet" href='css/earth.css' type='text/css' />
+  <link rel="stylesheet" href="css/sidepanel.css"> <!-- side panel -->
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  
+  <!-- Change the key below to your own Maps API key -->
+  <script type="text/javascript" src="lib/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="earth.js"></script>
+  <script type="text/javascript" src="great_circle.js"></script>
+  <script type="text/javascript" src="lib/spindlytext.js"></script>
+  <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.3.min.js"></script> -->
+
+<script type="text/javascript">
+/* <![CDATA[ */
+console.clear();
+
+var ge;
+
+google.load("earth", "1");
+
+camCoords = {lat: 51.504753, lon: -0.126375, alt: 250, heading: 180, tilt: 70};
+
+
+function init() {
+  google.earth.createInstance('map3d', initCB, failureCB);
+  //google.earth.createInstance('map3d', initCB, failureCB, { database: 'http://khmdb.google.com/?db=mars' });
+}
+
+function initCB(instance) {
+	ge = instance;
+	ge.getWindow().setVisibility(true);
+
+	// layers & options
+	ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, false);
+	ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
+	ge.getOptions().setMouseNavigationEnabled(false);
+	ge.getOptions().setFlyToSpeed(ge.SPEED_TELEPORT);
+	ge.getOptions().setGridVisibility(false);
+	ge.getOptions().setAtmosphereVisibility(false);
+
+	camera = ge.createCamera('');
+	ge.getView().setAbstractView(camera);
+
+	// start app
+	google.earth.addEventListener(ge, 'frameend', update);
+
+	// spindly code
+	spindlyDict = {};
+	selected_kml = [];
+
+	// blur focus on embed 
+	google.earth.addEventListener(ge.getWindow(), "mouseup", function(){
+		$('embed').trigger('blur');
+		simulatedClick(document.getElementById('side_panel'))
+	}
+
+	);
+}
+
+function failureCB(errorCode) {
+}
+
+</script>
+
+</head>
+<body onload="init(); welcome();" onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);">
+<main class="cd-main-content">
+	<span>
+		<div id="map3d"></div>
+		<div id="wiki_div"><iframe id="wikipedia" src="" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe></div>
+		<a href="#0" class="cd-btn" style="position:absolute; float:right; right:12px; top:12px; z-index:200;"><img src="img/gear_icon.png" width='35' height='35'></a>
+	</span>
+</main>
+
+<div id="side_panel" class="cd-panel from-right" tabindex="0">
+	<header class="cd-panel-header">
+		<h1>Navigation & Controls</h1>
+		<a href="#0" class="cd-panel-close">Close</a>
+	</header>
+	<div class="cd-panel-container" >
+		<div class="cd-panel-content">
+			<style type='text/css'>
+				p {margin-left: 10%; margin-right: 10%; color: #999;}
+				.key {width: 20%; text-align:center; color: #D7B852;}
+				.ctrl {width: 80%; color: #999;}
+			</style>
+			<p>Navigate by keyboard. Use 'h' and 'j' keys to target and search for nearby Wikipedia articles, then mouseclick place-markers to view their Wikipedia content.</p>
+			<h4>Navigation:</h4>
+			<table width='100%' class='cd-panel-tbl'>
+			<tr><td class='key'>w / s</td><td class='ctrl'>Move forward / backward</td></tr>
+			<tr><td class='key'>a / d</td><td class='ctrl'>Strafe left / right</td></tr>
+			<tr><td class='key'>&#8596; arrows</td><td class='ctrl'>Turn left / right</td></tr>
+			<tr><td class='key'>&#8597; arrows</td><td class='ctrl'>Move up / down</td></tr>
+			</table>
+			<h4>Other controls:</h4>
+			<table width='100%' class='cd-panel-tbl'>
+			<tr><td class='key'>h</td><td class='ctrl'>Show Wikipedia search area</td></tr>
+			<tr><td class='key'>j</td><td class='ctrl'>Search for and display Wikipedia entries</td></tr>
+			<tr><td class='key'>r</td><td class='ctrl'>Remove all Wikipedia entries from map</td></tr>
+			<tr><td class='key'>g</td><td class='ctrl'>Toggle lat/longitude grid</td></tr>
+			<tr><td class='key'>b</td><td class='ctrl'>Toggle Google Earth places</td></tr>
+			</table>
+		</div> <!-- cd-panel-content -->
+	</div> <!-- cd-panel-container -->
+</div> <!-- cd-panel -->
+
+<script type="text/javascript">
+	$(document).ready(function($){
+	$('.cd-btn').on('click', function(event){
+		event.preventDefault();
+		$('.cd-panel').addClass('is-visible');
+		$('.cd-btn').hide();
+	});
+	$('.cd-panel').on('click', function(event){
+		if( $(event.target).is('.cd-panel') || $(event.target).is('.cd-panel-close') ) { 
+			$('.cd-panel').removeClass('is-visible');
+			event.preventDefault();
+			$('.cd-btn').show();
+		}
+	});
+});
+	
+</script>
+
+</body>
+</html>

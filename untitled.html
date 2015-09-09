@@ -1,0 +1,22 @@
+<<!DOCTYPE html>
+<html>
+<head>
+	<title>AJAX call test</title>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+
+api_call = "http://api.geonames.org/findNearbyWikipediaJSON?formatted=true&lat=28.02&lng=86.91&username=geotheory&style=full&maxRows=5&radius=20";
+
+jsonIn = $.getJSON( api_call, function() {})
+  jsonIn.complete(function() {
+    data = jsonIn.responseJSON.geonames;
+    $( "body" ).append( "<p>Test</p>" );
+  });
+
+</script>
+
+</body>
+</html>

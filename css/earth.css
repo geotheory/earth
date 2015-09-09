@@ -1,0 +1,48 @@
+/* rescued file */
+
+html, body {
+  overflow: hidden;
+}
+
+body {
+  font-family: arial;
+  background: #333;
+  margin: 0;
+}
+
+#map3d {
+  background-color: #333;
+  z-index: 50;
+  border: none;
+  width: 60vw !important;
+  height:100vh !important;
+  display: inline-block;
+  margin: 0em;
+  margin-left: -0.55em;
+}
+
+#wikipedia, #wiki_div {
+  z-index: 50;
+  overflow-x: hidden;
+
+  width: 40vw !important;
+  height:100vh !important;
+  display: inline-block;
+  overflow: visible;
+  margin: 0em;
+  margin-left: -0.25em;
+  border: black;
+}
+
+.welcome_tbl {
+  width:80%; 
+  margin-left:15%; 
+  margin-right:15%;
+}
+
+#welcome_txt p{
+  line-height: 50px;
+  overflow: hidden;
+}
+
+#wikiglobe { background: url(img/wikiglobe.gif) no-repeat -9999px -9999px; }
